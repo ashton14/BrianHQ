@@ -119,6 +119,7 @@ export function initShorts(nags) {
       scrim.innerHTML = `
         <div class="alarm-box" role="alertdialog" aria-modal="true"
              aria-labelledby="alarm-title" aria-describedby="alarm-msg">
+          <button class="alarm-x" type="button" aria-label="Close">&times;</button>
           <div class="alarm-title" id="alarm-title">TIME'S UP</div>
           <p class="alarm-msg" id="alarm-msg"></p>
           <button class="px-btn alarm-ok" type="button">FINE. I'M GOING.</button>
@@ -126,7 +127,9 @@ export function initShorts(nags) {
       `;
       scrim.querySelector(".alarm-msg").textContent =
         pickDaily(ALARMS, 3) ?? ALARMS[0];
-      scrim.addEventListener("click", (e) => { if (e.target === scrim) closeAlarm(); });
+      // No backdrop-click dismiss on purpose: a stray click off the box used to
+      // wipe the nag before he'd read it. Closing takes the X (or the button).
+      scrim.querySelector(".alarm-x").addEventListener("click", closeAlarm);
       scrim.querySelector(".alarm-ok").addEventListener("click", closeAlarm);
       document.body.appendChild(scrim);
     }
