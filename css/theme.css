@@ -1,0 +1,105 @@
+/* ========= BRIAN'S HQ — palette, type, pixel primitives ========= */
+
+:root{
+  --bg:#12102a;
+  --bg-2:#0c0a1e;
+  --panel:#1e1b3a;
+  --panel-2:#2a2551;
+  --edge:#0a0818;
+  --ink:#f5f0e6;
+  --dim:#9a92c4;
+  --green:#3ddc84;
+  --red:#ff5c57;
+  --gold:#ffd23f;
+  --jeop:#060ce9;
+  --jeop-2:#0a13b8;
+  --purple:#7a5cff;
+  --it-g:#008c45;
+  --it-w:#f4f5f0;
+  --it-r:#cd212a;
+
+  --px:4px;                 /* one "pixel" */
+  --font-hd:"Press Start 2P","Courier New",monospace;
+  --font-bd:"VT323","Courier New",monospace;
+}
+
+*{box-sizing:border-box}
+
+html,body{margin:0;padding:0}
+
+body{
+  background:var(--bg);
+  background-image:
+    radial-gradient(ellipse at 50% -20%, #241f4d 0%, transparent 60%),
+    linear-gradient(180deg,#12102a 0%,#0c0a1e 100%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--font-bd);
+  font-size:21px;
+  line-height:1.35;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+img,canvas{image-rendering:pixelated;image-rendering:crisp-edges}
+
+h1,h2,h3,.px-btn,.tile-go,.mkt-badge,.chip,.jersey-num,.game-hint{
+  font-family:var(--font-hd);
+  letter-spacing:.02em;
+}
+
+a{color:var(--gold);text-decoration:none}
+a:hover{color:#fff}
+
+/* ---------- pixel panel primitive ---------- */
+.px-panel,.tile,.hq-header{
+  background:var(--panel);
+  border:var(--px) solid var(--edge);
+  border-radius:0;
+  box-shadow:
+    0 0 0 var(--px) #4b4383,
+    6px 6px 0 0 rgba(0,0,0,.55);
+  position:relative;
+}
+
+/* ---------- pixel button ---------- */
+.px-btn{
+  font-size:10px;
+  color:var(--ink);
+  background:var(--panel-2);
+  border:var(--px) solid var(--edge);
+  box-shadow:0 0 0 2px #5b52a0, 4px 4px 0 0 rgba(0,0,0,.5);
+  padding:10px 14px;
+  cursor:pointer;
+  text-align:left;
+  line-height:1.5;
+  transition:transform .06s steps(2), background .12s;
+}
+.px-btn:hover:not(:disabled){background:#38316b;color:#fff}
+.px-btn:active:not(:disabled){transform:translate(3px,3px);box-shadow:0 0 0 2px #5b52a0, 1px 1px 0 0 rgba(0,0,0,.5)}
+.px-btn:disabled{cursor:default;opacity:.9}
+.px-btn.small{font-size:9px;padding:8px 10px}
+.px-btn:focus-visible{outline:var(--px) solid var(--gold);outline-offset:2px}
+
+/* ---------- shared bits ---------- */
+.loading{color:var(--dim);font-size:18px;letter-spacing:.05em}
+.stamp{color:var(--dim);font-size:16px}
+.tile-title{font-size:12px;margin:0;color:var(--gold);text-shadow:0 var(--px) 0 rgba(0,0,0,.6)}
+.tile-go{font-size:9px;color:var(--dim)}
+a.tile-go:hover{color:var(--gold)}
+
+.up{color:var(--green)}
+.down{color:var(--red)}
+
+.scanlines{
+  position:fixed;inset:0;pointer-events:none;z-index:60;
+  background:repeating-linear-gradient(180deg,rgba(0,0,0,.16) 0 1px,transparent 1px 3px);
+  mix-blend-mode:multiply;
+}
+.scanlines::after{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.45) 100%);
+}
+.starfield{position:fixed;inset:0;pointer-events:none;z-index:0}
+.star{position:absolute;width:3px;height:3px;background:#fff;opacity:.5}
+.star.big{width:4px;height:4px;background:var(--gold)}

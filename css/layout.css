@@ -1,0 +1,174 @@
+/* ========= BRIAN'S HQ — page layout ========= */
+
+.hq-header{
+  position:relative;z-index:2;
+  margin:18px clamp(12px,3vw,34px) 0;
+  padding:14px 20px;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center;
+  gap:18px;
+}
+.hq-title{
+  font-size:clamp(16px,3.2vw,30px);
+  margin:0;
+  color:var(--gold);
+  text-shadow:0 var(--px) 0 var(--it-r), 0 calc(var(--px)*2) 0 rgba(0,0,0,.7);
+  white-space:nowrap;
+}
+.hdr-mid{min-width:0}
+.marquee{overflow:hidden;margin-top:8px;height:22px;border-top:2px solid #3a3370;padding-top:4px}
+.marquee-track{white-space:nowrap;color:var(--dim);font-size:18px}
+.clock-date{font-size:17px;color:var(--dim);text-align:right;white-space:nowrap}
+.clock-time{font-family:var(--font-hd);font-size:14px;color:var(--green);text-align:right;white-space:nowrap}
+
+/* ---------- grid ---------- */
+.hq-grid{
+  position:relative;z-index:2;
+  margin:20px clamp(12px,3vw,34px);
+  display:grid;
+  gap:20px;
+  grid-template-columns:repeat(12,1fr);
+}
+.tile{padding:14px 18px 12px;display:flex;flex-direction:column;min-width:0}
+.tile-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;
+  border-bottom:2px solid #3a3370;padding-bottom:8px}
+.tile-body{flex:1;min-height:0}
+.tile-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;
+  border-top:2px solid #3a3370;padding-top:8px;min-height:30px}
+
+.tile-markets{grid-column:span 7}
+.tile-espn   {grid-column:span 5}
+.tile-song   {grid-column:span 4}
+.tile-shorts {grid-column:span 5}
+.tile-photo  {grid-column:span 3;background:transparent;border:none;box-shadow:none;padding:0;
+  align-items:center;justify-content:center}
+.tile-trivia {grid-column:span 12}
+.tile-golf   {grid-column:span 6}
+.tile-corn   {grid-column:span 6}
+
+/* ---------- markets ---------- */
+.tile-markets .tile-body{display:flex;flex-direction:column;justify-content:space-evenly}
+.mkt-row{display:grid;grid-template-columns:1fr auto auto;align-items:baseline;gap:14px;
+  padding:9px 0;border-bottom:2px dotted #363065}
+.mkt-row:last-child{border-bottom:none}
+.mkt-name{font-family:var(--font-hd);font-size:11px;color:var(--ink)}
+.mkt-last{font-family:var(--font-hd);font-size:15px;text-align:right;font-variant-numeric:tabular-nums}
+.mkt-chg{font-size:19px;text-align:right;min-width:150px;font-variant-numeric:tabular-nums}
+.mkt-badge{font-size:9px;padding:4px 8px;border:2px solid currentColor;color:var(--dim)}
+.mkt-badge.open{color:var(--green)}
+.mkt-badge.closed{color:var(--dim)}
+.bull-bear{position:absolute;right:10px;bottom:44px;width:56px;height:44px;opacity:.85;pointer-events:none}
+
+/* ---------- espn ---------- */
+.news-row{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:2px dotted #363065;
+  transition:transform .12s steps(2)}
+.news-row:last-child{border-bottom:none}
+.news-row:hover{transform:translateX(4px)}
+.chip{font-size:8px;padding:4px 5px;background:var(--panel-2);border:2px solid #5b52a0;color:var(--dim);
+  flex:none;margin-top:3px;min-width:40px;text-align:center}
+.news-row:hover .chip{background:var(--gold);color:#1a1533;border-color:var(--gold)}
+.news-link{display:block;color:var(--ink);font-size:19px;line-height:1.2}
+.news-row:hover .news-link{color:var(--gold)}
+.news-ago{color:var(--dim);font-size:15px}
+
+/* ---------- song ---------- */
+.song-main{display:flex;gap:14px;align-items:center}
+.song-meta{min-width:0}
+.song-title{font-family:var(--font-hd);font-size:11px;line-height:1.6;color:var(--ink);margin:0 0 6px}
+.song-artist{font-size:21px;color:var(--gold);margin:0}
+.song-year{font-size:17px;color:var(--dim);margin:2px 0 10px}
+.song-play{display:inline-block;margin-top:4px}
+
+/* ---------- shorts ---------- */
+.nag{font-size:22px;line-height:1.25;margin:0 0 12px;color:var(--ink)}
+.nag::before{content:"\201C";color:var(--gold)}
+.nag::after{content:"\201D";color:var(--gold)}
+.dmg-row{display:flex;align-items:center;gap:12px}
+.dmg-meta{flex:1;min-width:0}
+.dmg-label{font-family:var(--font-hd);font-size:9px;color:var(--dim);margin-bottom:6px}
+.dmg-time{font-family:var(--font-hd);font-size:14px;color:var(--green)}
+.dmg-bar{height:16px;background:var(--bg-2);border:2px solid #5b52a0;margin-top:8px;position:relative;overflow:hidden}
+.dmg-fill{height:100%;width:0;background:var(--green);transition:width .4s steps(12), background .4s}
+.dmg-reset{font-size:15px;color:var(--dim);cursor:pointer;background:none;border:none;
+  font-family:var(--font-bd);padding:4px 0;text-decoration:underline}
+.dmg-reset:hover{color:var(--red)}
+
+/* ---------- trivia ---------- */
+.jeop-board{
+  position:relative;
+  background:linear-gradient(180deg,var(--jeop) 0%,var(--jeop-2) 100%);
+  border:var(--px) solid var(--edge);
+  box-shadow:inset 0 0 0 2px #4a52ff;
+  padding:20px 22px 18px;
+}
+.jeop-value{font-family:var(--font-hd);font-size:13px;color:#bcd0ff;
+  text-shadow:2px 2px 0 rgba(0,0,0,.6);margin-bottom:14px;letter-spacing:.08em}
+.jeop-value b{color:var(--gold);font-size:18px;margin-left:10px}
+.jeop-clue{font-size:26px;line-height:1.25;margin:0 0 18px;color:#fff;
+  text-shadow:2px 2px 0 rgba(0,0,0,.5);max-width:72ch}
+.jeop-answers{display:grid;gap:10px;max-width:760px}
+.jeop-answers .px-btn{background:#141a9e;box-shadow:0 0 0 2px #4a52ff, 4px 4px 0 0 rgba(0,0,0,.5)}
+.jeop-answers .px-btn:hover:not(:disabled){background:#2630c8}
+.jeop-answers .px-btn.correct{background:var(--green);color:#0b2418;box-shadow:0 0 0 2px #b9ffd8, 4px 4px 0 0 rgba(0,0,0,.5)}
+.jeop-answers .px-btn.wrong{background:var(--red);color:#2a0b0b}
+.jeop-answers .px-btn.muted{opacity:.4}
+.jeop-result{margin-top:16px;font-size:22px;color:#fff}
+.jeop-result b{color:var(--gold)}
+.confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.dd-banner{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);
+  font-family:var(--font-hd);font-size:clamp(18px,4vw,42px);color:var(--gold);
+  text-shadow:4px 4px 0 rgba(0,0,0,.7);pointer-events:none;white-space:nowrap}
+.wrong-stamp{position:absolute;right:8%;top:30%;font-size:clamp(70px,12vw,150px);color:var(--red);
+  text-shadow:5px 5px 0 rgba(0,0,0,.6);pointer-events:none;line-height:1}
+
+/* ---------- games ---------- */
+.game-wrap{position:relative}
+.tile-game canvas{width:100%;height:auto;display:block;background:#0b1626;
+  border:var(--px) solid var(--edge);box-shadow:inset 0 0 0 2px #37508a;touch-action:none;cursor:grab}
+.tile-game canvas.dragging{cursor:grabbing}
+.game-hint{position:absolute;left:10px;bottom:10px;font-size:8px;color:rgba(255,255,255,.55);
+  pointer-events:none;text-shadow:2px 2px 0 rgba(0,0,0,.7)}
+
+/* ---------- footer ---------- */
+.hq-footer{position:relative;z-index:2;text-align:center;color:var(--dim);font-size:16px;
+  padding:6px 0 26px}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  .tile-markets,.tile-espn,.tile-song,.tile-shorts{grid-column:span 6}
+  .tile-photo{grid-column:span 6}
+  .tile-golf,.tile-corn{grid-column:span 12}
+}
+@media (max-width:760px){
+  body{font-size:19px}
+  .hq-header{grid-template-columns:auto 1fr;gap:12px}
+  .hdr-right{grid-column:1/-1;display:flex;gap:14px;justify-content:flex-start}
+  .clock-date,.clock-time{text-align:left}
+  .hq-grid{gap:16px}
+  .tile{grid-column:span 12 !important}
+  .mkt-row{grid-template-columns:1fr auto;row-gap:2px}
+  .mkt-chg{grid-column:2;min-width:0}
+  .bull-bear{display:none}
+  .deco-cards,.deco-hoops{display:none}
+  .jeop-clue{font-size:22px}
+}
+
+/* ---------- shorts alarm (30-minute popup) ---------- */
+.alarm-scrim{
+  position:fixed;inset:0;z-index:50;
+  display:flex;align-items:center;justify-content:center;padding:20px;
+  background:rgba(6,4,20,.82);
+}
+.alarm-scrim[hidden]{display:none}
+.alarm-box{
+  max-width:560px;width:100%;text-align:center;
+  background:var(--panel);
+  border:var(--px) solid var(--edge);
+  box-shadow:0 0 0 2px var(--red), 8px 8px 0 0 rgba(0,0,0,.6);
+  padding:28px 26px 24px;
+}
+.alarm-title{font-family:var(--font-hd);font-size:18px;color:var(--red);
+  letter-spacing:.08em;text-shadow:3px 3px 0 rgba(0,0,0,.6)}
+.alarm-msg{font-size:26px;line-height:1.3;margin:18px 0 24px;color:var(--ink)}
+.alarm-ok{display:inline-block}

@@ -1,0 +1,74 @@
+/* ========= BRIAN'S HQ — motion ========= */
+
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.bob{animation:bob 5.5s ease-in-out infinite;animation-delay:var(--bob-delay,0s)}
+
+@keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+.blink-cursor{animation:blink 1s steps(1) infinite;color:var(--green)}
+
+@keyframes marquee{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.marquee-track{animation:marquee 26s linear infinite}
+
+@keyframes twinkle{0%,100%{opacity:.15}50%{opacity:.9}}
+.star{animation:twinkle var(--tw,4s) ease-in-out infinite;animation-delay:var(--td,0s)}
+
+@keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+.dots::after{content:"";animation:dots 1.2s steps(1) infinite}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+.vinyl{animation:spin 4s linear infinite}
+
+@keyframes flagwave{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+.fl-g{animation:flagwave 1.6s ease-in-out infinite}
+.fl-w{animation:flagwave 1.6s ease-in-out infinite .13s}
+.fl-r{animation:flagwave 1.6s ease-in-out infinite .26s}
+
+@keyframes dribble{0%,100%{transform:translateY(0) scaleY(1)}
+  45%{transform:translateY(-22px) scaleY(1.06)}
+  55%{transform:translateY(-22px) scaleY(1.06)}
+  92%{transform:translateY(0) scaleY(.82)}}
+.bball{animation:dribble 1.5s cubic-bezier(.4,0,.6,1) infinite}
+
+@keyframes shake{0%,100%{transform:translateX(0)}
+  15%{transform:translateX(-9px)}35%{transform:translateX(8px)}
+  55%{transform:translateX(-6px)}75%{transform:translateX(5px)}90%{transform:translateX(-2px)}}
+.shake{animation:shake .38s steps(2) 1}
+
+@keyframes slam{0%{transform:translate(-50%,-50%) scale(3.2);opacity:0}
+  22%{transform:translate(-50%,-50%) scale(1);opacity:1}
+  78%{transform:translate(-50%,-50%) scale(1);opacity:1}
+  100%{transform:translate(-50%,-50%) scale(1.4);opacity:0}}
+.dd-banner:not([hidden]){animation:slam 1.6s steps(8) 1 forwards}
+
+@keyframes stampin{0%{transform:scale(2.6) rotate(-22deg);opacity:0}
+  30%{transform:scale(.92) rotate(-12deg);opacity:1}
+  45%{transform:scale(1.06) rotate(-12deg)}
+  100%{transform:scale(1) rotate(-12deg);opacity:1}}
+.wrong-stamp:not([hidden]){animation:stampin .45s steps(6) 1 forwards}
+
+@keyframes goldflash{0%,100%{box-shadow:inset 0 0 0 2px #4a52ff}
+  50%{box-shadow:inset 0 0 0 10px var(--gold)}}
+.goldflash{animation:goldflash .5s steps(4) 3}
+
+@keyframes popin{0%{transform:translateY(10px);opacity:0}100%{transform:translateY(0);opacity:1}}
+.news-row{animation:popin .35s steps(4) both;animation-delay:calc(var(--i,0)*90ms)}
+
+@keyframes tickpulse{0%{transform:translateY(0)}40%{transform:translateY(-4px)}100%{transform:translateY(0)}}
+.mkt-row.pulsed .mkt-last{animation:tickpulse .35s steps(3) 1}
+
+@keyframes alarmin{0%{transform:scale(.7);opacity:0}
+  60%{transform:scale(1.05);opacity:1}
+  100%{transform:scale(1);opacity:1}}
+.alarm-scrim:not([hidden]) .alarm-box{animation:alarmin .3s steps(5) 1 both}
+.alarm-scrim:not([hidden]) .alarm-title{animation:shake .38s steps(2) 2}
+
+/* accessibility: kill ambient motion, keep games + feedback */
+@media (prefers-reduced-motion:reduce){
+  .bob,.marquee-track,.star,.vinyl,.fl-g,.fl-w,.fl-r,.bball,.dots::after,.news-row{
+    animation:none !important;
+  }
+  .news-row{opacity:1;transform:none}
+  .pcard{transition:none}
+  .dd-banner:not([hidden]),.wrong-stamp:not([hidden]){animation-duration:.01s}
+  .alarm-scrim:not([hidden]) .alarm-box,.alarm-scrim:not([hidden]) .alarm-title{animation:none}
+}

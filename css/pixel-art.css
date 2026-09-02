@@ -1,0 +1,121 @@
+/* ========= BRIAN'S HQ — code-drawn pixel art (no image files) ========= */
+
+/* ---------- Italian flag ---------- */
+.flag-it{display:flex;height:38px;width:57px;border:2px solid var(--edge);
+  box-shadow:2px 2px 0 rgba(0,0,0,.5)}
+.fl{width:19px;height:100%}
+.fl-g{background:var(--it-g)}
+.fl-w{background:var(--it-w)}
+.fl-r{background:var(--it-r)}
+
+/* ---------- playing cards (fanned) ---------- */
+.deco-cards{position:absolute;right:14px;top:-22px;height:96px;width:150px;pointer-events:auto;z-index:3}
+.pcard{
+  position:absolute;bottom:0;width:52px;height:74px;background:#f5f0e6;
+  border:3px solid var(--edge);box-shadow:2px 3px 0 rgba(0,0,0,.5);
+  transform-origin:50% 100%;
+  transition:transform .18s steps(3);
+  display:flex;flex-direction:column;align-items:flex-start;padding:4px 5px;
+}
+.pcard .pip{font-family:var(--font-hd);font-size:11px;color:#181430;line-height:1}
+.pcard .suit{font-size:26px;color:#181430;line-height:1;margin-top:2px}
+.pcard .red{color:var(--it-r)}
+.c1{left:0;transform:rotate(-16deg)}
+.c2{left:24px;transform:rotate(-5deg)}
+.c3{left:48px;transform:rotate(6deg)}
+.c4{left:72px;transform:rotate(17deg)}
+.deco-cards:hover .c1{transform:rotate(-28deg) translateY(-6px)}
+.deco-cards:hover .c2{transform:rotate(-10deg) translateY(-10px)}
+.deco-cards:hover .c3{transform:rotate(11deg) translateY(-10px)}
+.deco-cards:hover .c4{transform:rotate(29deg) translateY(-6px)}
+
+/* ---------- basketball + jersey ---------- */
+.deco-hoops{position:absolute;right:10px;bottom:38px;width:96px;height:72px;pointer-events:none;opacity:.95}
+.jersey{
+  position:absolute;right:0;bottom:0;width:52px;height:56px;
+  background:var(--it-r);
+  border:3px solid var(--edge);
+  box-shadow:2px 2px 0 rgba(0,0,0,.5);
+  /* pixel-ish tank top: notch out the shoulders/neck */
+  clip-path:polygon(0 0,18% 0,18% 18%,34% 18%,34% 0,66% 0,66% 18%,82% 18%,82% 0,100% 0,100% 100%,0 100%);
+  display:flex;align-items:center;justify-content:center;
+}
+.jersey-num{font-size:14px;color:#fff;text-shadow:2px 2px 0 rgba(0,0,0,.5);margin-top:10px}
+.bball{
+  position:absolute;left:0;bottom:2px;width:34px;height:34px;background:#e2711d;
+  border:3px solid var(--edge);border-radius:50%;
+  box-shadow:inset 0 0 0 2px #b4550f;
+}
+.bball::before,.bball::after{content:"";position:absolute;background:var(--edge)}
+.bball::before{left:50%;top:0;width:3px;height:100%;margin-left:-1.5px}
+.bball::after{top:50%;left:0;height:3px;width:100%;margin-top:-1.5px}
+
+/* ---------- polaroid family frame ---------- */
+.polaroid{
+  position:relative;background:#f5f0e6;padding:12px 12px 0;width:100%;max-width:280px;
+  border:var(--px) solid var(--edge);
+  box-shadow:6px 8px 0 rgba(0,0,0,.55);
+  transform:rotate(-3deg);
+}
+.tape{position:absolute;width:64px;height:22px;background:rgba(255,235,150,.65);
+  border:2px solid rgba(160,140,60,.5);top:-12px}
+.tape-l{left:-14px;transform:rotate(-24deg)}
+.tape-r{right:-14px;transform:rotate(21deg)}
+.photo-slot{position:relative;width:100%;aspect-ratio:1/1;background:#d9d3c4;overflow:hidden;
+  border:3px solid #3a3370}
+.photo-slot img{width:100%;height:100%;object-fit:cover;display:block}
+.photo-slot img.missing{display:none}
+.photo-placeholder{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;
+  justify-content:center;gap:10px;text-align:center;color:#4a4270;font-size:16px;
+  border:3px dashed #8d85bb;margin:6px}
+.photo-placeholder.show{display:flex}
+.photo-placeholder p{margin:0;line-height:1.3}
+.ph-icon{width:34px;height:26px;background:#8d85bb;position:relative;box-shadow:inset 0 0 0 3px #d9d3c4}
+.ph-icon::before{content:"";position:absolute;left:8px;top:-6px;width:12px;height:6px;background:#8d85bb}
+.polaroid-caption{font-family:var(--font-bd);font-size:22px;color:#3a3370;text-align:center;
+  padding:8px 4px 12px}
+
+/* ---------- vinyl record (song tile) ---------- */
+.vinyl{
+  position:relative;flex:none;width:92px;height:92px;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,
+    #ffd23f 0 16%, #17142e 16% 22%, #23203f 22% 26%, #17142e 26% 34%,
+    #23203f 34% 38%, #17142e 38% 46%, #23203f 46% 50%, #17142e 50% 100%);
+  border:3px solid var(--edge);box-shadow:3px 3px 0 rgba(0,0,0,.5);
+}
+.vinyl::after{content:"";position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px 0 0 -3px;
+  background:var(--bg-2);border-radius:50%}
+.decade-badge{display:inline-block;font-family:var(--font-hd);font-size:9px;padding:4px 7px;
+  border:2px solid currentColor}
+.d70{color:#ff9b42}
+.d80{color:#ff5cc8}
+.d90{color:#4ad6ff}
+
+/* ---------- shorts damage face ---------- */
+.face{
+  flex:none;width:56px;height:56px;background:var(--gold);border:3px solid var(--edge);
+  box-shadow:3px 3px 0 rgba(0,0,0,.5);position:relative;
+}
+.face .eye{position:absolute;top:16px;width:8px;height:10px;background:var(--edge)}
+.face .eye.l{left:11px}
+.face .eye.r{right:11px}
+.face .mouth{position:absolute;left:12px;right:12px;bottom:12px;height:5px;background:var(--edge)}
+.face.f0{background:var(--green)}
+.face.f0 .mouth{height:8px;border-radius:0 0 8px 8px}
+.face.f1{background:var(--gold)}
+.face.f1 .eye.l{height:5px;top:19px}
+.face.f2{background:#ff9b42}
+.face.f2 .mouth{height:12px;bottom:9px}
+.face.f2::after{content:"";position:absolute;right:2px;top:14px;width:6px;height:11px;background:#4ad6ff}
+.face.f3{background:var(--red)}
+.face.f3 .eye{height:8px;width:10px}
+.face.f3 .mouth{height:14px;bottom:7px;left:14px;right:14px;background:var(--edge);
+  box-shadow:inset 0 3px 0 var(--red),inset 0 -3px 0 var(--red)}
+
+/* ---------- error state ---------- */
+.err-state{display:flex;gap:12px;align-items:center;color:var(--dim);font-size:18px}
+.tv-broke{flex:none;width:48px;height:40px;background:var(--panel-2);border:3px solid var(--edge);
+  position:relative;box-shadow:2px 2px 0 rgba(0,0,0,.5)}
+.tv-broke::before{content:"";position:absolute;inset:6px;background:
+   repeating-linear-gradient(45deg,#3a3370 0 6px,#241f4d 6px 12px)}
+.tv-broke::after{content:"";position:absolute;left:14px;bottom:-8px;width:20px;height:5px;background:var(--edge)}
