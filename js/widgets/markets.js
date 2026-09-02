@@ -4,6 +4,12 @@ import { loadWithCache, errorState, clockStamp } from "../net.js";
 
 const LABELS = { ".SPX": "S&P 500", ".IXIC": "NASDAQ", ".DJI": "DOW" };
 const ORDER = [".SPX", ".IXIC", ".DJI"];
+// What clicking the name looks up — spelled out, so the search lands on the index.
+const SEARCH = {
+  ".SPX": "S&P 500 index today",
+  ".IXIC": "NASDAQ composite index today",
+  ".DJI": "Dow Jones Industrial Average today",
+};
 
 /** The single adapter function. Swapping data providers means changing only this. */
 function parseMarkets(json) {
@@ -79,9 +85,13 @@ export function initMarkets() {
       const row = document.createElement("div");
       row.className = "mkt-row";
 
-      const name = document.createElement("span");
+      const name = document.createElement("a");
       name.className = "mkt-name";
       name.textContent = r.name;
+      name.href = CONFIG.links.search + encodeURIComponent(SEARCH[r.symbol] || r.name);
+      name.target = "_blank";
+      name.rel = "noopener noreferrer";
+      name.title = `Look up ${r.name}`;
 
       const last = document.createElement("span");
       last.className = "mkt-last";

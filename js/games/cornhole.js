@@ -1,6 +1,6 @@
-// ========= CORNHOLE — drag the bag back, release, find the hole =========
+// ========= CORNHOLE — drag from the bag toward the board, release =========
 import { createLoop, attachDragAim, stepBody, launchVector } from "./engine.js";
-import { px, skyBands, cloud, trajectory, powerMeter, text,
+import { px, skyBands, cloud, trajectory, powerMeter, text, startSpot, aimLine,
          makeSparkles, stepSparkles, drawSparkles } from "../pixel/sprites.js";
 import { get, set } from "../storage.js";
 
@@ -12,7 +12,8 @@ const BAG_W = 18, BAG_H = 12, HW = BAG_W / 2, HH = BAG_H / 2;
 const BX0 = 560, BY0 = 206, BX1 = 800, BY1 = 150;
 const SLOPE = (BY1 - BY0) / (BX1 - BX0);
 const HOLE_X = 742, HOLE_R = 15;
-const BAGS_PER_ROUND = 4;
+const BAGS_PER_ROUND = 4, START_R = 46;
+const HINT = "DRAG FROM THE BAG THE WAY YOU WANT IT TO GO";
 
 const boardY = (x) => BY0 + (x - BX0) * SLOPE;
 
@@ -55,11 +56,13 @@ export function initCornhole() {
   attachDragAim(canvas, {
     getOrigin: () => bag,
     maxPull: MAX_PULL,
+    startRadius: START_R,
     enabled: () => state === "aim",
-    onAim: (p) => { aim = p; hintEl.textContent = "RELEASE TO THROW"; },
+    onMissedStart: () => { hintEl.textContent = "START THE DRAG ON THE BAG"; },
+    onAim: (p) => { aim = p; hintEl.textContent = "RELEASE TO SEND IT THAT WAY"; },
     onRelease: (p) => {
       aim = null;
-      hintEl.textContent = "DRAG BACK FROM THE BAG & RELEASE";
+      hintEl.textContent = HINT;
       if (p.power < 0.06) return;
       const v = launchVector(p, MAX_SPEED);
       bag.vx = v.vx;
@@ -175,6 +178,7 @@ export function initCornhole() {
     for (let x = 10; x < W; x += 31) px(ctx, x, GROUND + 8 + ((x / 31) % 3) * 4, 3, 4, "#37944a");
 
     drawBoard();
+    if (state === "aim" && !aim) startSpot(ctx, bag.x, bag.y, START_R * 0.55);
     if (!bag.done || bag.shrink > 0) drawBag();
     if (state === "aim" && aim) drawAim();
     drawSparkles(ctx, sparkles);
@@ -212,6 +216,7 @@ export function initCornhole() {
   }
 
   function drawAim() {
+    aimLine(ctx, bag, aim);
     trajectory(ctx, bag, launchVector(aim, MAX_SPEED), GRAVITY, GROUND);
     powerMeter(ctx, 16, H - 26, 130, 10, aim.power);
     text(ctx, "POWER", 16, H - 44, 8, "#f5f0e6");

@@ -52,7 +52,10 @@
 .mkt-row{display:grid;grid-template-columns:1fr auto auto;align-items:baseline;gap:14px;
   padding:9px 0;border-bottom:2px dotted #363065}
 .mkt-row:last-child{border-bottom:none}
-.mkt-name{font-family:var(--font-hd);font-size:11px;color:var(--ink)}
+a.mkt-name{font-family:var(--font-hd);font-size:11px;color:var(--ink);cursor:pointer;
+  justify-self:start;text-decoration:none;border-bottom:2px dotted transparent}
+a.mkt-name:hover,a.mkt-name:focus-visible{color:var(--gold);border-bottom-color:var(--gold)}
+a.mkt-name:focus-visible{outline:var(--px) solid var(--gold);outline-offset:3px}
 .mkt-last{font-family:var(--font-hd);font-size:15px;text-align:right;font-variant-numeric:tabular-nums}
 .mkt-chg{font-size:19px;text-align:right;min-width:150px;font-variant-numeric:tabular-nums}
 .mkt-badge{font-size:9px;padding:4px 8px;border:2px solid currentColor;color:var(--dim)}

@@ -31,16 +31,26 @@ export function toLogical(canvas, evt) {
 }
 
 /**
- * Slingshot input, shared by golf and cornhole.
- * Press anywhere, drag BACK from the projectile, release to launch.
+ * Aim input, shared by golf and cornhole.
+ *
+ * The drag has to START on the projectile — the games mark that spot with a
+ * ring — and from there the shot simply follows the mouse: drag up and right,
+ * it leaves up and right. Power is how far you dragged.
+ *
+ * The one clamp: the ball and the bag both sit ON the ground, so a downward
+ * drag has nowhere to send them. Dragging below the projectile is flattened to
+ * level, which keeps the aim line, the arc preview and the launch all agreeing.
+ *
  * Pointer Events, so mouse and touch behave identically.
  */
-export function attachDragAim(canvas, { getOrigin, maxPull = 160, enabled, onAim, onRelease }) {
+export function attachDragAim(canvas, {
+  getOrigin, maxPull = 160, startRadius = 46, enabled, onAim, onRelease, onMissedStart,
+}) {
   let dragging = false;
 
-  const pull = (pt) => {
+  const aimAt = (pt) => {
     const o = getOrigin();
-    let dx = o.x - pt.x, dy = o.y - pt.y;
+    let dx = pt.x - o.x, dy = Math.min(pt.y - o.y, 0);
     const len = Math.hypot(dx, dy);
     if (len > maxPull) { dx = (dx / len) * maxPull; dy = (dy / len) * maxPull; }
     return { dx, dy, len: Math.min(len, maxPull), power: Math.min(len, maxPull) / maxPull };
@@ -48,47 +58,41 @@ export function attachDragAim(canvas, { getOrigin, maxPull = 160, enabled, onAim
 
   canvas.addEventListener("pointerdown", (e) => {
     if (enabled && !enabled()) return;
+    const pt = toLogical(canvas, e);
+    const o = getOrigin();
+    if (Math.hypot(pt.x - o.x, pt.y - o.y) > startRadius) { onMissedStart?.(); return; }
     dragging = true;
     canvas.classList.add("dragging");
     // Capture keeps the drag alive past the canvas edge, which matters because a
-    // big backswing goes outside it. Not every pointer id can be captured.
+    // long pull goes outside it. Not every pointer id can be captured.
     try { canvas.setPointerCapture(e.pointerId); } catch { /* fine without it */ }
-    onAim?.(pull(toLogical(canvas, e)));
+    onAim?.(aimAt(pt));
     e.preventDefault();
   });
 
   canvas.addEventListener("pointermove", (e) => {
     if (!dragging) return;
-    onAim?.(pull(toLogical(canvas, e)));
+    onAim?.(aimAt(toLogical(canvas, e)));
   });
 
   const end = (e) => {
     if (!dragging) return;
     dragging = false;
     canvas.classList.remove("dragging");
-    onRelease?.(pull(toLogical(canvas, e)));
+    onRelease?.(aimAt(toLogical(canvas, e)));
   };
   canvas.addEventListener("pointerup", end);
   canvas.addEventListener("pointercancel", end);
 }
 
 /**
- * Turn a pull into a launch velocity.
- *
- * A pure slingshot (fire exactly opposite the drag) doesn't work here: the ball
- * and the bag both sit ON the ground, so there is no room to drag downward and
- * every shot comes out flat. So the horizontal axis is a slingshot — drag left,
- * it goes right — while the vertical axis always launches UPWARD, proportional
- * to how far you dragged vertically in either direction. That makes the natural
- * gesture a backswing: drag back and up for a high shot, straight back for a
- * low runner.
+ * Turn an aim into a launch velocity: straight down the direction you dragged,
+ * at a speed set by how far you dragged.
  */
-export function launchVector(pull, maxSpeed) {
-  const dx = pull.dx;
-  const dy = -Math.abs(pull.dy);
-  const len = Math.hypot(dx, dy) || 1;
-  const speed = pull.power * maxSpeed;
-  return { vx: (dx / len) * speed, vy: (dy / len) * speed };
+export function launchVector(aim, maxSpeed) {
+  const len = Math.hypot(aim.dx, aim.dy) || 1;
+  const speed = aim.power * maxSpeed;
+  return { vx: (aim.dx / len) * speed, vy: (aim.dy / len) * speed };
 }
 
 /** One projectile integration step. */

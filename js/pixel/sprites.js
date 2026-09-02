@@ -29,6 +29,28 @@ export function trajectory(ctx, start, vel, gravity, groundY, color = "rgba(255,
   }
 }
 
+/** The ring that marks where a drag has to start. Slowly spins so it reads as live. */
+export function startSpot(ctx, x, y, r, color = "#ffd23f") {
+  const t = performance.now() / 1000;
+  const rr = r + Math.sin(t * 3) * 2;
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2 + t;
+    px(ctx, x + Math.cos(a) * rr - 1, y + Math.sin(a) * rr - 1, 3, 3, color);
+  }
+}
+
+/** The drag itself: a dotted line from the projectile to the cursor, tipped with a target. */
+export function aimLine(ctx, from, aim, color = "#ffd23f") {
+  const steps = Math.max(1, Math.round(aim.len / 8));
+  for (let i = 1; i < steps; i++) {
+    const t = i / steps;
+    px(ctx, from.x + aim.dx * t - 1, from.y + aim.dy * t - 1, 3, 3, color);
+  }
+  const tx = from.x + aim.dx, ty = from.y + aim.dy;
+  px(ctx, tx - 6, ty - 1, 13, 3, color);
+  px(ctx, tx - 1, ty - 6, 3, 13, color);
+}
+
 export function powerMeter(ctx, x, y, w, h, power) {
   px(ctx, x - 2, y - 2, w + 4, h + 4, "#0a0818");
   px(ctx, x, y, w, h, "#1e1b3a");

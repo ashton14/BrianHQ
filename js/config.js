@@ -6,6 +6,8 @@ export const CONFIG = {
   photoCaption: "the crew",
 
   links: {
+    // Clicking an index name searches for it; swap in another engine here.
+    search: "https://www.google.com/search?q=",
     etrade: "https://us.etrade.com/e/t/user/login",
     espn: "https://www.espn.com",
     shorts: "https://www.youtube.com/shorts",

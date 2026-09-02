@@ -1,12 +1,14 @@
-// ========= BACKYARD GOLF — drag the club back, release, chase the flag =========
+// ========= BACKYARD GOLF — drag from the ball toward the flag, release =========
 import { createLoop, attachDragAim, stepBody, clamp, launchVector } from "./engine.js";
-import { px, skyBands, cloud, trajectory, powerMeter, text,
+import { px, skyBands, cloud, trajectory, powerMeter, text, startSpot, aimLine,
          makeSparkles, stepSparkles, drawSparkles } from "../pixel/sprites.js";
 import { get, set } from "../storage.js";
 
 const W = 900, H = 260, GROUND = 214;
 const BALL_R = 5, GRAVITY = 1500, MAX_PULL = 170, MAX_SPEED = 1000;
-const HOLE_R = 15, SWING_MS = 170, CONTACT_AT = 0.55;
+const HOLE_R = 15, SWING_MS = 170, CONTACT_AT = 0.55, START_R = 46;
+
+const HINT = "DRAG FROM THE BALL THE WAY YOU WANT IT TO GO";
 
 export function initGolf() {
   const canvas = document.getElementById("golf-canvas");
@@ -44,14 +46,16 @@ export function initGolf() {
   attachDragAim(canvas, {
     getOrigin: () => ball,
     maxPull: MAX_PULL,
+    startRadius: START_R,
     enabled: () => state === "aim",
+    onMissedStart: () => { hintEl.textContent = "START THE DRAG ON THE BALL"; },
     onAim: (p) => {
       aim = p;
-      hintEl.textContent = "RELEASE TO SWING";
+      hintEl.textContent = "RELEASE TO SEND IT THAT WAY";
     },
     onRelease: (p) => {
       aim = null;
-      hintEl.textContent = "DRAG BACK FROM THE BALL & RELEASE";
+      hintEl.textContent = HINT;
       if (p.power < 0.06) return;                 // an accidental tap isn't a swing
       state = "swing";
       swing = { t: 0, pull: p, fired: false };
@@ -132,6 +136,7 @@ export function initGolf() {
     for (let x = 6; x < W; x += 23) px(ctx, x, GROUND + 7 + ((x / 23) % 3) * 4, 3, 3, "#2f9152");
 
     drawHole();
+    if (state === "aim" && !aim) startSpot(ctx, ball.x, ball.y, START_R * 0.55);
     drawBall();
     if (state === "aim" && aim) drawAim();
     if (state === "swing" || state === "aim") drawClub();
@@ -159,6 +164,7 @@ export function initGolf() {
   }
 
   function drawAim() {
+    aimLine(ctx, ball, aim);
     trajectory(ctx, ball, launchVector(aim, MAX_SPEED), GRAVITY, GROUND);
     powerMeter(ctx, 16, H - 26, 130, 10, aim.power);
     text(ctx, "POWER", 16, H - 44, 8, "#f5f0e6");
